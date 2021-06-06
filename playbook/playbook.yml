@@ -1,0 +1,46 @@
+- hosts: all
+  user: vagrant
+  become: True
+  tasks:
+    - name: Adjust the color that display directory
+      copy:
+        src: /vagrant/.dircolors
+        dest: /home/vagrant/.dircolors
+        force: no
+
+    - name: Update and upgrade apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+
+    - name: Install the minimum required packages.
+      apt:
+        name:
+          - wget
+          - clang
+          - vim
+          - git
+          - unar
+          - gdb
+        state: present
+        autoclean: yes
+
+    - name: Copy the directory that contains eval and book.
+      copy:
+        src: /vagrant/engineDir
+        dest: /home/vagrant
+        force: no
+
+    - name: Copy the directory that contains source.
+      copy:
+        src: /vagrant/YaneuraOu
+        dest: /home/vagrant
+        force: no
+
+    - name: Build the Yaneura Engine.
+      shell: |
+        sudo make clean tournament TARGET_CPU=SSE42
+        sudo mv ./YaneuraOu-by-gcc ../../engineDir
+      args:
+        chdir: /home/vagrant/YaneuraOu/source

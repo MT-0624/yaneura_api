@@ -1,0 +1,13 @@
+bin/
+obj/
+exe/
+build/
+.vs/
+.vscode/
+openblas/
+.pyc
+.json
+__pycache__/
+AyaneruGate/
+*.sfen
+unit_test3.py
