@@ -22,6 +22,7 @@
           - vim
           - git
           - unar
+          - make
           - gdb
         state: present
         autoclean: yes
@@ -40,7 +41,8 @@
 
     - name: Build the Yaneura Engine.
       shell: |
-        sudo make clean tournament TARGET_CPU=SSE42
-        sudo mv ./YaneuraOu-by-gcc ../../engineDir
+        make clean tournament TARGET_CPU=SSE42
+        mv ./YaneuraOu-by-gcc ../../engineDir
       args:
         chdir: /home/vagrant/YaneuraOu/source
+      become: yes
