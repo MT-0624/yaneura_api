@@ -24,6 +24,7 @@
           - unar
           - make
           - gdb
+          - python3-pip
         state: present
         autoclean: yes
 
