@@ -47,7 +47,7 @@
       when: not executable.stat.exists
 
 
-    - name: Build the Yaneura Engine.
+    - name: Build the Yaneura Engine if not exists.
       shell: |
         make clean tournament TARGET_CPU=SSE42
         mv ./YaneuraOu-by-gcc ../../engineDir
