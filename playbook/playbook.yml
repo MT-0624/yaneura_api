@@ -14,7 +14,7 @@
         update_cache: yes
         cache_valid_time: 86400 #One day
 
-    - name: Install the minimum required packages.
+    - name: Install the minimum required apt packages.
       apt:
         name:
           - wget
@@ -34,11 +34,18 @@
         dest: /home/vagrant
         force: no
 
+    - name: Verify that the executable exists.
+      stat:
+        path: /home/vagrant/engineDir/YaneuraOu-by-gcc
+      register: executable
+
     - name: Copy the directory that contains source.
       copy:
         src: /vagrant/YaneuraOu
         dest: /home/vagrant
         force: no
+      when: not executable.stat.exists
+
 
     - name: Build the Yaneura Engine.
       shell: |
@@ -47,3 +54,17 @@
       args:
         chdir: /home/vagrant/YaneuraOu/source
       become: yes
+      when: not executable.stat.exists
+
+    - name: upgrade pip
+      pip:
+        name: pip
+        executable: pip3
+        state: latest
+
+    - name: Install the packages required to publish the server.
+      pip:
+        name:
+          - uvicorn
+          - fastapi
+          - pydantic
