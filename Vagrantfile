@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     # boxes will only be checked for updates when the user runs
     # `vagrant box outdated`. This is not recommended.
     config.vm.box_check_update = true
-    config.vm.network "forwarded_port", guest: 80, host: 8080
+    config.vm.network "forwarded_port", guest: 8080, host: 8080
 
     config.vm.synced_folder "./", "/vagrant"
 
