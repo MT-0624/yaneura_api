@@ -24,7 +24,7 @@ class Job(BaseModel):
     def __call__(self):
         jobs[self.job_id] = self
         try:
-            for _ in range(1000):
+            for _ in range(10):
                 print(f'{datetime.now():%H:%M:%S}')
                 sleep(1)
 

@@ -66,8 +66,7 @@
       pip:
         name:
           - uvicorn
-          - fastapivmstat -t 2
-          -
+          - fastapi
           - pydantic
 
     - name: Upgrade all packages using pip
