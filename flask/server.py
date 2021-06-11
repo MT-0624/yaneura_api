@@ -52,7 +52,7 @@ async def stop(job_id: int):
     if t is None:
         raise HTTPException(400, detail="job is not exists.")
 
-    t.is_cancelled = True
+    jobs[job_id].is_cancelled = True
     return {"message": f"{job_id}の中止処理を受け付けました"}
 
 
