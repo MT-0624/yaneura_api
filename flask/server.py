@@ -6,7 +6,12 @@ from pydantic import BaseModel
 from time import sleep
 from typing import Dict
 import uvicorn
-import ayane
+
+import sys
+
+sys.path.append("../Ayane-master/source")
+
+import shogi.Ayane as ayane
 
 app = FastAPI()
 
