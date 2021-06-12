@@ -46,7 +46,6 @@
         force: no
       when: not executable.stat.exists
 
-
     - name: Build the Yaneura Engine if not exists.
       shell: |
         make clean tournament TARGET_CPU=SSE42
@@ -55,6 +54,12 @@
         chdir: /home/vagrant/YaneuraOu/source
       become: yes
       when: not executable.stat.exists
+
+    - name: Copy the directory that contains Ayane.
+      copy:
+        src: /vagrant/Ayane-master
+        dest: /home/vagrant
+        force: no
 
     - name: upgrade pip
       pip:
