@@ -7,13 +7,16 @@ from time import sleep
 from typing import Dict
 import uvicorn
 
-import sys
+import sys, queue
 
 sys.path.append("../Ayane-master/source")
 
 import shogi.Ayane as ayane
 
 app = FastAPI()
+
+engine = ayane.UsiEngine()
+engine.set_engine_options()
 
 """
 仮想環境上で実行することを想定したファイルのため
