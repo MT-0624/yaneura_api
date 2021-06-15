@@ -8,7 +8,7 @@
         dest: /home/vagrant/.dircolors
         force: no
 
-    - name: Update and upgrade apt packages
+    - name: Update and upgrade pip
       apt:
         upgrade: yes
         update_cache: yes
@@ -55,11 +55,8 @@
       become: yes
       when: not executable.stat.exists
 
-    - name: Copy the directory that contains Ayane.
-      copy:
-        src: /vagrant/Ayane-master
-        dest: /home/vagrant
-        force: no
+    - name: git clone Ayane
+      git: repo=https://github.com/yaneurao/Ayane.git dest=/home/vagrant/Ayane-master
 
     - name: upgrade pip
       pip:
@@ -77,3 +74,4 @@
     - name: Upgrade all packages using pip
       become: yes
       shell: pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
+      ignore_errors: yes

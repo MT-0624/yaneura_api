@@ -7,7 +7,7 @@ from time import sleep
 from typing import Dict
 import uvicorn
 
-import sys, queue
+import sys, queue, yaml
 
 sys.path.append("../Ayane-master/source")
 
@@ -15,8 +15,15 @@ import shogi.Ayane as ayane
 
 app = FastAPI()
 
+with open("./engine_option.yml", "r") as f:
+    ENGINE_SETTING = yaml.safe_load(f)
+
 engine = ayane.UsiEngine()
-engine.set_engine_options()
+engine.set_engine_options(ENGINE_SETTING)
+
+path = r"/home/vagrant/engineDir/YaneuraOu-by-gcc"
+
+engine.connect(path)
 
 """
 仮想環境上で実行することを想定したファイルのため
@@ -24,6 +31,8 @@ pycharmなどで書くときはinterpreterをリモートのマシンのpython3�
 実行は.pyのある場所で
 uvicorn main:app --reload
 """
+
+
 
 
 class Job(BaseModel):
