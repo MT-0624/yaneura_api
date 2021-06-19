@@ -23,8 +23,6 @@ engine.set_engine_options(ENGINE_SETTING)
 
 path = r"/home/vagrant/engineDir/YaneuraOu-by-gcc"
 
-engine.connect(path)
-
 """
 仮想環境上で実行することを想定したファイルのため
 pycharmなどで書くときはinterpreterをリモートのマシンのpython3に設定すること
@@ -33,33 +31,35 @@ uvicorn main:app --reload
 """
 
 
+class Query(BaseModel):
+    sfen: str
+    time_limit: int
+    depth_limit: int
 
 
 class Job(BaseModel):
     job_id: int
+    query: Query
     is_cancelled: bool = False
 
     def __call__(self):
         jobs[self.job_id] = self
         try:
-            for _ in range(10):
-                print(f'{datetime.now():%H:%M:%S}')
-                sleep(1)
-
-                if self.is_cancelled:
-                    del jobs[self.job_id]
-                    break
-
+            engine.connect(path)
+            engine.usi_position(self.query.sfen)
+            engine.usi_go_and_wait_bestmove(f"btime 0 wtime 0 byoyomi {self.query.time_limit * 1000}")
+            print(f"=== UsiThinkResult{self.job_id} ===\n" + engine.think_result.to_string())
+            engine.disconnect()
         finally:
-            print('時間のかかる処理が終わりました')
+            print(f'{self.job_id}>処理が終わりました')
 
 
 jobs: Dict[int, Job] = {}
 
 
 @app.post('/{job_id}/', status_code=202)
-async def start(job_id: int, background_tasks: BackgroundTasks):
-    t = Job(job_id=job_id)
+async def start(job_id: int, background_tasks: BackgroundTasks, query: Query):
+    t = Job(job_id=job_id, query=query)
     background_tasks.add_task(t)
     return {"message": "時間のかかる処理を受け付けました"}
 
