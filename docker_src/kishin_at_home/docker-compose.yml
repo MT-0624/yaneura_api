@@ -1,9 +1,14 @@
 version: '3'
 services:
  mysql:
+   # docker exec で入れるようになったとしても
+   # しばらく時間を置かないと正常にmysqlにはログインできないことがある　ウザい
+   # 1分くらい待ってから入ると普通にログインできた
    build: ./mysql
    container_name: mysql
    environment:
      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
      MYSQL_USER: ${MYSQL_USER}
      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+     TZ: 'Asia/Tokyo'
+   command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
