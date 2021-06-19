@@ -1,0 +1,81 @@
+- hosts: all
+  user: vagrant
+  become: True
+  tasks:
+    - name: Adjust the color that display directory
+      copy:
+        src: /vagrant/.dircolors
+        dest: /home/vagrant/.dircolors
+        force: no
+
+    - name: Update and upgrade pip
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+
+    - name: Install the minimum required apt packages.
+      apt:
+        name:
+          - wget
+          - clang
+          - vim
+          - git
+          - unar
+          - make
+          - gdb
+          - python3-pip
+        state: present
+        autoclean: yes
+
+    - name: Copy the directory that contains eval and book.
+      copy:
+        src: /vagrant/engineDir
+        dest: /home/vagrant
+        force: no
+
+    - name: Verify that the executable exists.
+      stat:
+        path: /home/vagrant/engineDir/YaneuraOu-by-gcc
+      register: executable
+
+    - name: Copy the directory that contains source.
+      copy:
+        src: /vagrant/YaneuraOu
+        dest: /home/vagrant
+        force: no
+      when: not executable.stat.exists
+
+    - name: Build the Yaneura Engine if not exists.
+      shell: |
+        make clean tournament TARGET_CPU=SSE42
+        mv ./YaneuraOu-by-gcc ../../engineDir
+      args:
+        chdir: /home/vagrant/YaneuraOu/source
+      become: yes
+      when: not executable.stat.exists
+
+    - name: git clone Ayane
+      git: repo=https://github.com/yaneurao/Ayane.git dest=/home/vagrant/Ayane-master
+
+    - name: upgrade pip
+      pip:
+        name: pip
+        executable: pip3
+        state: latest
+
+    - name: Install the packages required to publish the server.
+      pip:
+        name:
+          - uvicorn
+          - fastapi
+          - pydantic
+
+    - name: Upgrade all packages using pip
+      become: yes
+      shell: pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
+      ignore_errors: yes
+
+    - name: setup Docker and docker-compose enviroment
+      become: yes
+      shell: apt install docker-compose

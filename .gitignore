@@ -1,0 +1,5 @@
+.idea
+.git
+.vagrant
+./YaneuraOu-by-gcc
+*.env
