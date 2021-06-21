@@ -29,6 +29,7 @@ create TABLE requests
     requested_depth  int,
     foreign key key_board_id(board_id) references Boards(board_id)
 );
+
 delimiter
 //
 create procedure insert_request(
@@ -37,8 +38,22 @@ create procedure insert_request(
     _requested_time int,
     _requested_node int,
     _requested_depth int
-    );
+);
+
 begin
+/*
+_boardに一致するboardが
+Boardsに存在すればそのBoard_idをrequestsに追加する
+なければ新規レコードをBoardsに追加する
+*/
+DECLARE
+@search_id int;
+set
+@search_id = (
+    select board_id from boards
+    where _board = boards.board_id;
+)
+
 
 end
 //
