@@ -79,3 +79,4 @@
     - name: setup Docker and docker-compose enviroment
       become: yes
       shell: apt install docker-compose
+      ignore_errors: yes
