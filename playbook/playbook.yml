@@ -1,3 +1,4 @@
+# 初回はvagrant up --provisionしないとちゃんと動かないかもしれない
 - hosts: all
   user: vagrant
   become: True
@@ -78,5 +79,4 @@
 
     - name: setup Docker and docker-compose enviroment
       become: yes
-      shell: apt install docker-compose
-      ignore_errors: yes
+      shell: apt install docker-compose -y
