@@ -9,7 +9,7 @@ use kishin_service;
 
 create TABLE Boards
 (
-    board_id          int primary key auto_increment,
+    board_id          int primary key,
     board             varchar(200),
     analyzed_datetime datetime,
     eval_score        varchar(20),
@@ -41,17 +41,25 @@ create procedure insert_request(
 
 begin
     DECLARE search_id int;
+    DECLARE new_id int;
+
     set search_id =
             (
-                select board_id
+                select count(*)
                 from Boards
                 where _board = Boards.board
             );
 
-    if count(search_id) = 0 then
+    select concat("search_id:", search_id);
+    select concat("new_id:", new_id);
+
+    if search_id = 0 then
         -- 存在しなければ未解析レコードとして両テーブルに新規追加
-        insert into Boards(board, analyzed_datetime, eval_score, opinion)
-            value (_board, null, null, null);
+        set new_id = (select count(*) from Boards)
+            + 1;
+
+        insert into Boards(board_id, board, analyzed_datetime, eval_score, opinion)
+            value (new_id, _board, null, null, null);
 
         insert into requests(user_id,
                              board_id,
@@ -61,14 +69,14 @@ begin
                              requested_depth)
             value (
                    _user_id,
-                   LAST_INSERT_ID(),
+                   new_id,
                    NOW(),
                    _requested_time,
                    _requested_node,
                    _requested_depth
             );
 
-    elseif count(search_id) = 1 then
+    elseif search_id = 1 then
         -- すでに解析済みレコードが存在すれば解析済み
         insert into requests(user_id,
                              board_id,
@@ -83,7 +91,7 @@ begin
                    _requested_time,
                    _requested_node,
                    _requested_depth
-                  );
+            );
 
     end if;
 
