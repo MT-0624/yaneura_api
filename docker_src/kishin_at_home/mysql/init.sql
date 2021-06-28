@@ -49,7 +49,7 @@ begin
             );
 
     if count(search_id) = 0 then
-        --
+        -- 存在しなければ未解析レコードとして両テーブルに新規追加
         insert into Boards(board, analyzed_datetime, eval_score, opinion)
             value (_board, null, null, null);
 
@@ -61,7 +61,7 @@ begin
                              requested_depth)
             value (
                    _user_id,
-                   last_insert_id(),
+                   LAST_INSERT_ID(),
                    NOW(),
                    _requested_time,
                    _requested_node,
@@ -69,7 +69,7 @@ begin
             );
 
     elseif count(search_id) = 1 then
-        --
+        -- すでに解析済みレコードが存在すれば解析済み
         insert into requests(user_id,
                              board_id,
                              request_datetime,
