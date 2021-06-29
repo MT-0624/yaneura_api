@@ -11,6 +11,8 @@ create TABLE Boards
 (
     board_id          int primary key,
     board             varchar(200),
+    analyzer_id       int,
+    request_datetime  datetime,
     analyzed_datetime datetime,
     eval_score        varchar(20),
     opinion           varchar(200)
@@ -59,8 +61,20 @@ begin
         select concat("search_id:", search_id),
                concat("new_id:", new_id);
 
-        insert into Boards(board_id, board, analyzed_datetime, eval_score, opinion)
-            value (new_id, _board, null, null, null);
+        insert into Boards(board_id,
+                           board, analyzer_id,
+                           request_datetime,
+                           analyzed_datetime,
+                           eval_score,
+                           opinion)
+            value (new_id,
+                   _board,
+                   NOW(),
+                   null,
+                   null,
+                   null,
+                   null
+            );
 
         insert into requests(user_id,
                              board_id,
@@ -100,3 +114,41 @@ end;
 //
 delimiter ;
 
+delimiter //
+
+
+create function task_mapper(
+    IN _analyzer_id int
+)
+    returns varchar(200)
+
+begin
+    declare b_id int;
+    declare _bd varchar(200);
+
+    select b_id := board_id,
+           _bd := board
+    from Boards
+    where analyzer_id is null
+    order by request_datetime desc
+    limit 1;
+    select b_id;
+
+    if b_id is not null then
+        update Boards
+        set analyzer_id = _analyzer_id
+        where board_id = b_id;
+    end if;
+    return _bd;
+
+
+end;
+//
+delimiter ;
+
+
+create user 'analyzer'@'engine' identified by 'analyze';
+create user 'api'@'service_api' identified by 'api';
+
+grant execute on procedure kishin_service.insert_request to 'api'@'service_api';
+grant select , update on kishin_service.Boards to 'analyzer'@'engine';
