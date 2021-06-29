@@ -50,13 +50,14 @@ begin
                 where _board = Boards.board
             );
 
-    select concat("search_id:", search_id);
-    select concat("new_id:", new_id);
 
     if search_id = 0 then
         -- 存在しなければ未解析レコードとして両テーブルに新規追加
         set new_id = (select count(*) from Boards)
             + 1;
+
+        select concat("search_id:", search_id),
+               concat("new_id:", new_id);
 
         insert into Boards(board_id, board, analyzed_datetime, eval_score, opinion)
             value (new_id, _board, null, null, null);
