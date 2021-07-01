@@ -121,7 +121,6 @@ create procedure task_mapper(
     IN _analyzer_id int,
     OUT board_text varchar (200)
 )
-    returns varchar(200)
 
 begin
     declare b_id int;
@@ -139,14 +138,13 @@ begin
         set analyzer_id = _analyzer_id
         where board_id = b_id;
     end if;
-    return _bd;
 end;
 //
 delimiter ;
 
 
-create user 'analyzer'@'engine' identified by 'analyze';
-create user 'api'@'service_api' identified by 'api';
+create user 'analyzer'@'engine' identified by @USI_ENGINE_PASSWORD;
+create user 'api'@'service_api' identified by @API_SERVICE_PASSWORD;
 
 grant execute on procedure kishin_service.insert_request to 'api'@'service_api';
 grant select , update on kishin_service.Boards to 'analyzer'@'engine';
