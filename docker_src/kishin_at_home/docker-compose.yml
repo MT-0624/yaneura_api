@@ -8,10 +8,14 @@ services:
    container_name: mysql
    environment:
      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-     API_SERVICE_PASSWORD: ${API_SERVICE_PASSWORD}
-     USI_ENGINE_PASSWORD: ${USI_ENGINE_PASSWORD}
      TZ: 'Asia/Tokyo'
-   command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+   command:
+     - mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+     - >
+       mysql -uroot -p${MYSQL_ROOT_PASSWORD} <
+       create user 'analyzer'@'engine' identified by ${ENGINE_USER_PASSWORD};
+       create user 'api'@'service_api' identified by ${API_USER_PASSWORD};
+
    ports:
      - '3306:3306'
  engine:

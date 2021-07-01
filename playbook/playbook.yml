@@ -80,6 +80,8 @@
     - name: setup Docker and docker-compose enviroment
       become: yes
       shell: apt install docker-compose -y
+      shell: gpasswd -a $USER docker
+
 
     - name: Create symbolic link for rootDir
       become:  yes
