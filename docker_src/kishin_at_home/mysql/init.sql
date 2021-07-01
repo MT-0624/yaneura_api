@@ -117,17 +117,17 @@ delimiter ;
 delimiter //
 
 
-create function task_mapper(
-    _analyzer_id int
+create procedure task_mapper(
+    IN _analyzer_id int,
+    OUT board_text varchar (200)
 )
     returns varchar(200)
 
 begin
     declare b_id int;
-    declare _bd varchar(200);
 
     select b_id = board_id,
-           _bd = board
+           board_text = board
     from Boards
     where analyzer_id is null
     order by request_datetime desc
@@ -140,8 +140,6 @@ begin
         where board_id = b_id;
     end if;
     return _bd;
-
-
 end;
 //
 delimiter ;
