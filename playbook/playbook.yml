@@ -80,3 +80,8 @@
     - name: setup Docker and docker-compose enviroment
       become: yes
       shell: apt install docker-compose -y
+
+    - name: Create symbolic link for rootDir
+      become:  yes
+      shell: ln -s /vagrant/docker_src/kishin_at_home /kishin
+

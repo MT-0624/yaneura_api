@@ -118,7 +118,7 @@ delimiter //
 
 
 create function task_mapper(
-    IN _analyzer_id int
+    _analyzer_id int
 )
     returns varchar(200)
 
@@ -126,8 +126,8 @@ begin
     declare b_id int;
     declare _bd varchar(200);
 
-    select b_id := board_id,
-           _bd := board
+    select b_id = board_id,
+           _bd = board
     from Boards
     where analyzer_id is null
     order by request_datetime desc
