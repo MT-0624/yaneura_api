@@ -1,8 +1,8 @@
 drop
-    database if exists kishin_service;
+database if exists kishin_service;
 
 create
-    database kishin_service;
+database kishin_service;
 
 
 use kishin_service;
@@ -24,9 +24,9 @@ create TABLE requests
     user_id          int,
     board_id         int,
     request_datetime datetime,
-    requested_time   int,
-    requested_node   int,
-    requested_depth  int,
+    required_time   int,
+    required_node   int,
+    required_depth  int,
     foreign key key_board_id (board_id) references Boards (board_id)
 );
 
@@ -35,17 +35,20 @@ delimiter //
 
 create procedure insert_request(
     IN _user_id int,
-    IN _board varchar(200),
-    IN _requested_time int,
-    IN _requested_node int,
-    IN _requested_depth int
-)
+    IN _board varchar (200),
+    IN _required_time int,
+    IN _required_node int,
+    IN _required_depth int
+        )
 
 begin
-    DECLARE search_id int;
-    DECLARE new_id int;
+    DECLARE
+search_id int;
+    DECLARE
+new_id int;
 
-    set search_id =
+    set
+search_id =
             (
                 select count(*)
                 from Boards
@@ -53,62 +56,66 @@ begin
             );
 
 
-    if search_id = 0 then
+    if
+search_id = 0 then
         -- 存在しなければ未解析レコードとして両テーブルに新規追加
         set new_id = (select count(*) from Boards)
             + 1;
 
-        select concat("search_id:", search_id),
-               concat("new_id:", new_id);
+select concat("search_id:", search_id),
+       concat("new_id:", new_id);
 
-        insert into Boards(board_id,
-                           board, analyzer_id,
-                           request_datetime,
-                           analyzed_datetime,
-                           eval_score,
-                           opinion)
-            value (new_id,
-                   _board,
-                   NOW(),
-                   null,
-                   null,
-                   null,
-                   null
+insert into Boards(board_id,
+                   board,
+                   analyzer_id,
+                   request_datetime,
+                   analyzed_datetime,
+                   eval_score,
+                   opinion)
+    value (
+            new_id,
+            _board,
+            null,
+            NOW(),
+            null,
+            null,
+            null
             );
 
-        insert into requests(user_id,
-                             board_id,
-                             request_datetime,
-                             requested_time,
-                             requested_node,
-                             requested_depth)
-            value (
+insert into requests(user_id,
+                     board_id,
+                     request_datetime,
+                     required_time,
+                     required_node,
+                     required_depth)
+    value (
                    _user_id,
                    new_id,
                    NOW(),
-                   _requested_time,
-                   _requested_node,
-                   _requested_depth
+                   _required_time,
+                   _required_node,
+                   _required_depth
             );
 
-    elseif search_id = 1 then
+elseif
+search_id = 1 then
         -- すでに解析済みレコードが存在すれば解析済み
         insert into requests(user_id,
                              board_id,
                              request_datetime,
-                             requested_time,
-                             requested_node,
-                             requested_depth)
+                             required_time,
+                             required_node,
+                             required_depth)
             value (
                    _user_id,
                    search_id,
                    NOW(),
-                   _requested_time,
-                   _requested_node,
-                   _requested_depth
+                   _required_time,
+                   _required_node,
+                   _required_depth
             );
 
-    end if;
+end if;
 
 end;
 //
@@ -123,28 +130,35 @@ create procedure task_mapper(
 )
 
 begin
-    declare b_id int;
+    declare
+b_id int;
 
-    select b_id = board_id,
-           board_text = board
-    from Boards
-    where analyzer_id is null
-    order by request_datetime desc
-    limit 1;
-    select b_id;
+select b_id = board_id,
+       board_text = board
+from Boards
+where analyzer_id is null
+order by request_datetime desc limit 1;
+select b_id;
 
-    if b_id is not null then
-        update Boards
-        set analyzer_id = _analyzer_id
+if
+b_id is not null then
+update Boards
+set analyzer_id = _analyzer_id
         where board_id = b_id;
-    end if;
+end if;
 end;
 //
 delimiter ;
 
 
-create user 'analyzer'@'%' identified by "$(USI_ENGINE_PASSWORD)";
-create user 'api'@'%' identified by "$(API_SERVICE_PASSWORD)";
+create
+user 'analyzer'@'%' identified by "$(USI_ENGINE_PASSWORD)";
+create
+user 'api'@'%' identified by "$(API_SERVICE_PASSWORD)";
 
-grant execute on procedure kishin_service.insert_request to 'api'@'%';
-grant select , update on kishin_service.Boards to 'analyzer'@'%';
+grant execute on procedure kishin_service.insert_request to
+'api'@'%';
+grant
+select,
+update
+    on kishin_service.Boards to 'analyzer'@'%';
