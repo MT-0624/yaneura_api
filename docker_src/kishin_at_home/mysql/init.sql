@@ -122,24 +122,22 @@ end;
 delimiter ;
 
 delimiter //
-
-
-create function task_mapper(
-    _analyzer_id int
+create procedure task_mapper(
+                                _analyzer_id int, OUT _board varchar(200)
 )
-    returns varchar(200)
-
 begin
     declare
         b_id int;
+    SET b_id = 0;
+    SET _board = 'dummy';
 
-    select @b_id := board_id,
-           @board_text := cast(board as char)
+    select b_id = board_id,
+           _board = board
     from Boards
     where analyzer_id is null
     order by request_datetime desc
     limit 1;
-    select b_id;
+    select concat('b_id:',b_id), concat('board:',_board);
 
     if
         b_id is not null then
@@ -147,8 +145,6 @@ begin
         set analyzer_id = _analyzer_id
         where board_id = b_id;
     end if;
-
-    return @board_text;
 end;
 //
 delimiter ;
