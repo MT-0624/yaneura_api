@@ -15,8 +15,10 @@ with open("./huge_sfen.txt", encoding="UTF-8") as f:
     sfen_lst = f.read().split("\n")[:-2]
 
 while True:
-    time.sleep(rd.randint(2, 5))
+    wait = rd.randint(2, 5) + rd.randint(2, 5)
+    time.sleep(wait)
 
+    print(wait)
     if RANDOM_SFEN:
         print(rd.choice(sfen_lst))
     else:
