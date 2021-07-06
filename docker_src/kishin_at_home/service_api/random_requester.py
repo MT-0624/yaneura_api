@@ -15,7 +15,7 @@ with open("./huge_sfen.txt", encoding="UTF-8") as f:
     sfen_lst = f.read().split("\n")[:-2]
 
 while True:
-    wait = rd.randint(2, 5) + rd.randint(2, 5)
+    wait = rd.randint(1, 3) + rd.randint(1, 3)
     time.sleep(wait)
 
     print(wait)
