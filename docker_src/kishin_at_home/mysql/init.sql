@@ -11,7 +11,7 @@ create TABLE Boards
 (
     board_id          int primary key,
     board             varchar(200),
-    analyzer_id       int,
+    engine_id         int,
     request_datetime  datetime,
     analyzed_datetime datetime,
     eval_score        varchar(20),
@@ -32,6 +32,13 @@ create TABLE requests
 
 delimiter //
 
+create table engines
+(
+    engine_id int primary key,
+    nickname  varchar(50)
+);
+
+insert into engines(engine_id, nickname) VALUE (1, 'Ayane');
 
 create procedure insert_request(
     IN _user_id int,
@@ -67,7 +74,7 @@ begin
 
         insert into Boards(board_id,
                            board,
-                           analyzer_id,
+                           engine_id,
                            request_datetime,
                            analyzed_datetime,
                            eval_score,
@@ -75,7 +82,7 @@ begin
             value (
                    new_id,
                    _board,
-                   null,
+                   1,
                    NOW(),
                    null,
                    null,
@@ -120,35 +127,6 @@ begin
 end;
 //
 delimiter ;
-
-delimiter //
-create procedure task_mapper(
-                                _analyzer_id int, OUT _board varchar(200)
-)
-begin
-    declare
-        b_id int;
-    SET b_id = 0;
-    SET _board = 'dummy';
-
-    select b_id = board_id,
-           _board = board
-    from Boards
-    where analyzer_id is null
-    order by request_datetime desc
-    limit 1;
-    select concat('b_id:',b_id), concat('board:',_board);
-
-    if
-        b_id is not null then
-        update Boards
-        set analyzer_id = _analyzer_id
-        where board_id = b_id;
-    end if;
-end;
-//
-delimiter ;
-
 
 create
     user 'analyzer'@'%' identified by "$(USI_ENGINE_PASSWORD)";
