@@ -15,11 +15,20 @@ services:
 
 
     #     - mysql -uroot -p${MYSQL_ROOT_PASSWORD} < create user 'analyzer'@'engine' identified by ${ENGINE_USER_PASSWORD};
-    #     - mysql -uroot -p${MYSQL_ROOT_PASSWORD} < create user 'api'@'service_api' identified by ${API_USER_PASSWORD};
+    #     - mysql -uroot -p${MYSQL_ROOT_PASSWORD} < create user 'api'@'api' identified by ${API_USER_PASSWORD};
 
     ports:
       - '3306:3306'
+
   engine:
     build: ./engine
     container_name: engine
+
+  api:
+    build: ./api
+    container_name: api
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      ENGINE_USER_PASSWORD: ${ENGINE_USER_PASSWORD}
+      API_USER_PASSWORD: ${API_USER_PASSWORD}
 
