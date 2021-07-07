@@ -3,3 +3,4 @@
 .vagrant
 ./YaneuraOu-by-gcc
 *.env
+/src/random_requester_test.py
