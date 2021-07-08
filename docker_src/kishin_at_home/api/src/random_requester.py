@@ -5,6 +5,8 @@ import time
 import os
 import pymysql.cursors
 
+time.sleep(60)
+
 MYSQL_HOSTNAME = "mysql"
 MYSQL_USERNAME = "api"
 MYSQL_PASSWORD = os.environ["API_USER_PASSWORD"]
