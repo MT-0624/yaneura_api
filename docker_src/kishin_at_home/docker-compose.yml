@@ -6,6 +6,8 @@ services:
     # 1分くらい待ってから入ると普通にログインできた
     build: ./mysql
     container_name: mysql
+    cap_add:
+      - SYS_NICE
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       ENGINE_USER_PASSWORD: ${ENGINE_USER_PASSWORD}
