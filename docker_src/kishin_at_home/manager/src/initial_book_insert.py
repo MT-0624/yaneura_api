@@ -1,13 +1,9 @@
 # coding:UTF-8
+
 import os
 import pymysql
-import sys
+import time
 
-
-print(help(sys))
-help(sys)
-
-print(os.uname())
 ROOT_PASSWORD = os.environ["MYSQL_ROOT_PASSWORD"]
 API_USER_PASSWORD = os.environ["API_USER_PASSWORD"]
 ENGINE_USER_PASSWORD = os.environ["ENGINE_USER_PASSWORD"]
@@ -21,7 +17,7 @@ queries = [
 
 while True:
     try:
-        connection = pymysql.connect(host="localhost",
+        connection = pymysql.connect(host="mysql",
                                      port=3306,
                                      user="root",
                                      password=ROOT_PASSWORD,
@@ -42,3 +38,5 @@ while True:
         exit()
     except Exception as e:
         print(e)
+    finally:
+        time.sleep(15)

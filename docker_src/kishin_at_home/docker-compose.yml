@@ -5,32 +5,41 @@ services:
     # しばらく時間を置かないと正常にmysqlにはログインできないことがある　ウザい
     # 1分くらい待ってから入ると普通にログインできた
     build: ./mysql
+    hostname: mysql
     container_name: mysql
+
     cap_add:
       - SYS_NICE
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      ENGINE_USER_PASSWORD: ${ENGINE_USER_PASSWORD}
-      API_USER_PASSWORD: ${API_USER_PASSWORD}
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
-
-    #     - mysql -uroot -p${MYSQL_ROOT_PASSWORD} < create user 'analyzer'@'engine' identified by ${ENGINE_USER_PASSWORD};
-    #     - mysql -uroot -p${MYSQL_ROOT_PASSWORD} < create user 'api'@'api' identified by ${API_USER_PASSWORD};
-
     ports:
       - '3306:3306'
 
   engine:
+    hostname: api
     build: ./engine
     container_name: engine
+
+    restart: always
+
 
   api:
     build: ./api
     container_name: api
+    hostname: api
+    restart: always
+    environment:
+      API_USER_PASSWORD: ${API_USER_PASSWORD}
+
+  manager:
+    build: ./manager
+    container_name: manager
+    hostname: manager
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       ENGINE_USER_PASSWORD: ${ENGINE_USER_PASSWORD}
       API_USER_PASSWORD: ${API_USER_PASSWORD}
+    depends_on: [mysql]
 

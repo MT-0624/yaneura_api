@@ -6,6 +6,11 @@ create
 
 
 use kishin_service;
+create table engines
+(
+    engine_id int primary key,
+    nickname  varchar(50)
+);
 
 create TABLE Boards
 (
@@ -15,7 +20,8 @@ create TABLE Boards
     request_datetime  datetime,
     analyzed_datetime datetime,
     eval_score        varchar(20),
-    opinion           varchar(200)
+    opinion           varchar(200),
+    foreign key engine_key (engine_id) references engines (engine_id)
 );
 
 create TABLE requests
@@ -32,11 +38,7 @@ create TABLE requests
 
 delimiter //
 
-create table engines
-(
-    engine_id int primary key,
-    nickname  varchar(50)
-);
+
 
 insert into engines(engine_id, nickname) VALUE (1, 'Ayane');
 
