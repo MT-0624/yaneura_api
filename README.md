@@ -10,3 +10,5 @@ docker-composeで<br>
 【dbコンテナ】（定跡・キャッシュ・リクエストを持つデータベース）<br>
 【apiコンテナ】（webリクエストにて局面を受け付けるand形勢を返す）<br>
 【AIコンテナ】（ビルドしたやねうら王）<br>
+## 自分用イメージ
+![image](https://user-images.githubusercontent.com/41203239/125211429-40589c00-e2e1-11eb-8ffc-51d68347872d.png)
