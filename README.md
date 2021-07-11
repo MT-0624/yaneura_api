@@ -1,4 +1,4 @@
-# yaneura_flask
+# yaneura_api
 
 やねうらお様によるコンピューター将棋ソフトやねうら王をサーバ上で駆動させて<br>
 形勢を返すAPI<br>
