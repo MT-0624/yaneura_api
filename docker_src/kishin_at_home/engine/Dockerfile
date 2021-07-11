@@ -1,12 +1,14 @@
-FROM python:3.9.5-buster
+FROM ubuntu:20.04
 
 COPY ./src /src
 
-WORKDIR /src
+CMD ["/bin/sh","/src/init.sh"]
 
-RUN pip3 install --upgrade pip
-RUN pip3 install --upgrade setuptools
-RUN pip3 install -r requirements.txt
-
-CMD ["random_requester.py"]
-ENTRYPOINT ["python3"]
+#WORKDIR /src
+#
+#RUN pip3 install --upgrade pip
+#RUN pip3 install --upgrade setuptools
+#RUN pip3 install -r requirements.txt
+#
+#CMD ["random_requester.py"]
+#ENTRYPOINT ["python3"]

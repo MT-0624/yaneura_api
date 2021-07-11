@@ -18,9 +18,10 @@ services:
       - '3306:3306'
 
   engine:
-    hostname: api
+    hostname: engine
     build: ./engine
     container_name: engine
+    tty: true
 
     restart: always
 
