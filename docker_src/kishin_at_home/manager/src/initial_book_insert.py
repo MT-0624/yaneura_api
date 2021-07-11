@@ -14,7 +14,6 @@ queries = [
     f"grant execute on procedure kishin_service.insert_request to 'api'@'%';",
     f"grant select,update on kishin_service.Boards to 'analyzer'@'%';",
 ]
-
 while True:
     try:
         connection = pymysql.connect(host="mysql",
