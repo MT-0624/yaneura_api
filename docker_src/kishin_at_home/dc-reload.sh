@@ -9,6 +9,5 @@ if [ $# == 0 ]; then
 else
   docker-compose stop $1
   docker-compose build --no-cache $1
-  docker-compose up -d $1
-  docker ps
+  docker-compose up $1
 fi
