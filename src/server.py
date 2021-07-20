@@ -21,7 +21,7 @@ with open("./engine_option.yml", "r") as f:
 engine = ayane.UsiEngine()
 engine.set_engine_options(ENGINE_SETTING)
 
-path = r"/home/vagrant/engineDir/YaneuraOu-by-gcc"
+path = r"/home/vagrant/shogi_dir/YaneuraOu-by-gcc"
 
 """
 仮想環境上で実行することを想定したファイルのため

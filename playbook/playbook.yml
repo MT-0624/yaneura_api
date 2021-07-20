@@ -31,13 +31,13 @@
 
     - name: Copy the directory that contains eval and book.
       copy:
-        src: /vagrant/engineDir
+        src: /vagrant/shogi_dir
         dest: /home/vagrant
         force: no
 
     - name: Verify that the executable exists.
       stat:
-        path: /home/vagrant/engineDir/YaneuraOu-by-gcc
+        path: /home/vagrant/shogi_dir/YaneuraOu-by-gcc
       register: executable
 
     - name: Copy the directory that contains source.
