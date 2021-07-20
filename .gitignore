@@ -4,4 +4,4 @@
 ./YaneuraOu-by-gcc
 *.env
 /src/random_requester_test.py
-./shogi_dir
+/shogi_dir/
