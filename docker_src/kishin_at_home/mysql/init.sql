@@ -21,6 +21,9 @@ create TABLE Boards
     analyzed_datetime datetime,
     eval_score        varchar(20),
     opinion           varchar(200),
+    depth        varchar(20),
+    nps        varchar(20),
+    nodes        varchar(20),
     foreign key engine_key (engine_id) references engines (engine_id)
 );
 

@@ -10,16 +10,23 @@ time.sleep(60)
 MYSQL_HOSTNAME = "mysql"
 MYSQL_USERNAME = "api"
 MYSQL_PASSWORD = os.environ["API_USER_PASSWORD"]
-# MySQLに接続する
-connection = pymysql.connect(host=MYSQL_HOSTNAME,
-                             port=3306,
-                             user=MYSQL_USERNAME,
-                             password=MYSQL_PASSWORD,
-                             db='kishin_service',
-                             charset='utf8',
-                             # cursorclassを指定することで
-                             # Select結果をtupleではなくdictionaryで受け取れる
-                             cursorclass=pymysql.cursors.DictCursor)
+
+while True:
+    try:
+        # MySQLに接続する
+        connection = pymysql.connect(host=MYSQL_HOSTNAME,
+                                     port=3306,
+                                     user=MYSQL_USERNAME,
+                                     password=MYSQL_PASSWORD,
+                                     db='kishin_service',
+                                     charset='utf8',
+                                     # cursorclassを指定することで
+                                     # Select結果をtupleではなくdictionaryで受け取れる
+                                     cursorclass=pymysql.cursors.DictCursor)
+
+        break
+    except Exception as e:
+        print(e)
 
 RANDOM_SFEN = True
 index = 0
