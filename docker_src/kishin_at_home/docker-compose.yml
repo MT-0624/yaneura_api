@@ -2,7 +2,7 @@ version: '3'
 services:
   mysql:
     # docker exec で入れるようになったとしても
-    # しばらく時間を置かないと正常にmysqlにはログインできないことがある　ウザい
+    # しばらく時間を置かないと正常にmysqlにはログインできずその上コンテナが落ちることがある　なんで・・・
     # 1分くらい待ってから入ると普通にログインできた
     build: ./mysql
     hostname: mysql
