@@ -54,6 +54,7 @@ async def take_post(req, resp):
         resp.text = "please send post"
     else:
         data = await req.media()
+        resp.media = data
 
         with connection.cursor() as cursor:
             print(data)
