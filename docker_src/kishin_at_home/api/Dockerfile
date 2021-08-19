@@ -6,5 +6,4 @@ RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN pip3 install -r requirements.txt
 
-CMD ["random_requester.py"]
-ENTRYPOINT ["python3"]
+ENTRYPOINT ["python3","random_requester.py"]

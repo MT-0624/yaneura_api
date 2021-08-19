@@ -1,3 +1,4 @@
+
 if [ $# == 0 ]; then
   docker-compose down
   docker-compose build --no-cache

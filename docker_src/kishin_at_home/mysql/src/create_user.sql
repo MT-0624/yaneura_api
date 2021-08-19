@@ -7,9 +7,14 @@ create
 grant execute on procedure kishin_service.insert_request to
     'api'@'%';
 
-grant call function kishin_service.get_eval to
-    'api'@'%';
+
 grant
     select,
         update
         on kishin_service.Boards to 'analyzer'@'%';
+
+grant
+    select on kishin_service.Boards to 'api'@'%';
+
+grant execute on function kishin_service.get_eval to
+    'api'@'%';
