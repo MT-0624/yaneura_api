@@ -34,6 +34,11 @@ services:
     restart: always
     environment:
       API_USER_PASSWORD: ${API_USER_PASSWORD}
+      PORT: 8080
+    ports:
+      - '8080:8080'
+    volumes:
+      - "./api/src:/src"
 
   manager:
     build: ./manager
