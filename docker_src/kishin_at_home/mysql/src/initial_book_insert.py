@@ -16,6 +16,7 @@ queries = [
     f"create user 'analyzer'@'%' identified by '{ENGINE_USER_PASSWORD}';",
     f"create user 'api'@'%' identified by '{API_USER_PASSWORD}';",
     f"grant execute on procedure kishin_service.insert_request to 'api'@'%';",
+    f"grant execute on function kishin_service.get_eval to 'api'@'%';",
     f"grant select,update on kishin_service.Boards to 'analyzer'@'%';",
 ]
 
