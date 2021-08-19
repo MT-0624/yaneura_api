@@ -1,7 +1,5 @@
 FROM python:3.9.5-buster
 
-COPY ./src /src
-
 WORKDIR /src
 
 RUN pip3 install --upgrade pip
