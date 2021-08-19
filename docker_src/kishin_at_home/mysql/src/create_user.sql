@@ -6,6 +6,9 @@ create
 
 grant execute on procedure kishin_service.insert_request to
     'api'@'%';
+
+grant call function kishin_service.get_eval to
+    'api'@'%';
 grant
     select,
         update

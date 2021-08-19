@@ -4,6 +4,7 @@ drop
 create
     database kishin_service;
 
+SET GLOBAL log_bin_trust_function_creators = 1;
 
 use kishin_service;
 create table engines
@@ -44,6 +45,14 @@ delimiter //
 
 
 insert into engines(engine_id, nickname) VALUE (1, 'Ayane');
+
+create function get_eval(sfen varchar(200)) returns INT
+return (
+    select eval_score
+    from Boards
+    where board = sfen
+    )
+;
 
 create procedure insert_request(
     IN _user_id int,
