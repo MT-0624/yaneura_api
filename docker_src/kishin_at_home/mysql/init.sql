@@ -46,7 +46,7 @@ delimiter //
 
 insert into engines(engine_id, nickname) VALUE (1, 'Ayane');
 
-create function get_eval(sfen varchar(200)) returns INT
+create function get_eval(sfen varchar(200)) returns VARCHAR(200)
 return (
     select eval_score
     from Boards
@@ -83,9 +83,6 @@ begin
         set new_id = (select count(*) from Boards)
             + 1;
 
-        select concat("search_id:", search_id),
-               concat("new_id:", new_id);
-
         insert into Boards(board_id,
                            board,
                            engine_id,
@@ -99,7 +96,7 @@ begin
                    1,
                    NOW(),
                    null,
-                   null,
+                   'unanalyzed',
                    null
             );
 
